@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const cloudinary = require('../utils/cloudinary');
 const bcrypt = require('bcrypt');
-const User = require('../models/user.model');
+const User = require('../models');
 const { userService } = require('../services/user.service');
 
 exports.signUp = async (req, res, next) => {
