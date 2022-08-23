@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Please enter a valid name"],
+      immutable: true, // cannot change
     },
     email: {
       type: String,
@@ -18,7 +19,9 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      required: [true, 'please enter a valid image'],
+      default:
+        'https://res.cloudinary.com/oluwatobiloba/image/upload/v1628753027/Grazac/avatar_cihz37.png',
     },
     password: {
       type: String,
@@ -32,8 +35,14 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
+    capped: {
+      size: 1024 * 1024 * 1024, // The size is always important
+      max: 1_000_000, // Maximum of 1million records
+      autoIndexId: true,
+    },
     collection: 'user-data',
     timestamps: true,
+    versionKey: false,
   }
 );
 

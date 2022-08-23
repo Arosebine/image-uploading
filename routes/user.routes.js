@@ -9,7 +9,7 @@ const {
   getSingleUser,
   updateUser,
 } = require('../controllers/user__controller');
-const { isAuth } = require('../middleware/isAuth');
+const { isAuth, validateAdmin } = require('../middleware/isAuth');
 
 router.post('/signup', upload.single('image'), signUp);
 
@@ -17,7 +17,7 @@ router.post('/login', loginUser);
 
 router.get('/dashboard', isAuth, userDashboard);
 
-router.delete('/delete', deleteAllUsers);
+router.delete('/delete', isAuth, validateAdmin, deleteAllUsers);
 
 router.get('/:id', getSingleUser);
 

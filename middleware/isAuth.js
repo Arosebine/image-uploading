@@ -28,3 +28,17 @@ exports.isAuth = async (req, res, next) => {
     return res.status(401).json(`signUp as user || Token expired  \n ${e}`);
   }
 };
+
+exports.validateAdmin = async (req, res, next) => {
+  try {
+    const { role } = req.user;
+    console.log(role);
+    if (role === 'admin') {
+      next();
+    } else {
+      throw new Error('You are not authorized to access this route', '', 401);
+    }
+  } catch (err) {
+    return res.status(500).json({ error: error });
+  }
+};
