@@ -4,7 +4,7 @@ exports.signUp = async (data) => {
   try {
     const user = new User(data);
     const savedUser = user.save();
-    if (!savedUser) throw new Error();
+    if (!savedUser) throw new Error('user not saved');
     return savedUser;
   } catch (error) {
     return { error: error.message };
@@ -15,31 +15,29 @@ exports.findAll = async () => {
   try {
     const users = await User.find({});
 
-    if (!users) throw new Error();
+    if (!users) throw new Error('users not found');
 
-    return { error: null, data: users };
+    return users;
   } catch (error) {
     return { error: error.message, data: null };
   }
 };
 
 exports.findUserByEmail = async (email) => {
-  try {
-    const user = await User.findOne(email);
-
-    // if (!user) throw new Error();
-
-    return user;
-  } catch (error) {
-    return { error: error.message, data: null };
+  const user = await User.findOne({
+    email,
+  });
+  if (!user) {
+    return false;
   }
+  return user;
 };
 
 exports.findUsersById = async (id) => {
   try {
     const user = await User.findById(id);
 
-    if (!user) throw new Error();
+    if (!user) throw new Error(`${id} not found`);
 
     return { error: null, data: user };
   } catch (error) {

@@ -11,6 +11,7 @@ const {
   updateAUser,
   deleteAll,
   findUserByEmail,
+  findUsersById,
 } = require('../services/user.service');
 const {
   registerValidation,
@@ -28,17 +29,16 @@ exports.signUp = async (req, res, next) => {
         .status(400)
         .json({ message: validation.error.details[0].message });
 
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const check_user = await findUserByEmail({ email });
-    console.log(check_user);
-    if (check_user) {
-      return res.status(400).json({
-        message: 'Email already exist',
+    const isExisting = await findUserByEmail(email);
+    if (isExisting) {
+      return res.status(409).json({
+        message: 'User Already existing',
       });
     }
 
     const hashedPassword = await passwordHash(password);
-  
+    const result = await cloudinary.uploader.upload(req.file.path);
+
     const data = {
       name,
       email,
@@ -47,7 +47,9 @@ exports.signUp = async (req, res, next) => {
     };
     const new_user = await signUp(data);
 
-    return res.status(201).json(new_user);
+    return res
+      .status(201)
+      .json({ message: 'successfully added', new_user: new_user._id });
   } catch (error) {
     next(error);
   }
@@ -110,7 +112,7 @@ exports.getAllUsers = async (req, res, next) => {
 // get single user
 exports.getSingleUser = async (req, res, next) => {
   try {
-    const user = await findUserByEmail({ _id: req.params.id });
+    const user = await findUsersById({ _id: req.params.id });
     return res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -119,7 +121,7 @@ exports.getSingleUser = async (req, res, next) => {
 // update user
 exports.updateUser = async (req, res, next) => {
   try {
-    const user = await findUserByEmail({ _id: req.params.id });
+    const user = await findUsersById({ _id: req.params.id });
     if (!user) {
       return res.status(400).json({
         message: 'User not found',
@@ -146,7 +148,7 @@ exports.updateUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await findUserByEmail({ _id: req.params.id });
+    const user = await findUsersById({ _id: req.params.id });
     if (!user) {
       return res.status(400).json({
         message: 'User not found',
