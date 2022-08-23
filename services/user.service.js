@@ -1,12 +1,11 @@
 const User = require('../models/user.model');
 
-
-
 exports.signUp = async (data) => {
   try {
     const user = new User(data);
     const savedUser = user.save();
     if (!savedUser) throw new Error();
+    return savedUser;
   } catch (error) {
     return { error: error.message };
   }
@@ -30,7 +29,7 @@ exports.findUserByEmail = async (email) => {
 
     // if (!user) throw new Error();
 
-    return user ;
+    return user;
   } catch (error) {
     return { error: error.message, data: null };
   }

@@ -5,8 +5,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please enter a valid name"],
-      immutable: true, // cannot change
+      required: [true, 'Please enter a valid name'],
     },
     email: {
       type: String,
@@ -16,6 +15,7 @@ const userSchema = new mongoose.Schema(
           throw new Error('Email is invalid');
         }
       },
+      immutable: true, // cannot change
     },
     image: {
       type: String,
@@ -36,11 +36,10 @@ const userSchema = new mongoose.Schema(
   },
   {
     capped: {
-      size: 1024 * 1024 * 1024, // The size is always important
-      max: 1_000_000, // Maximum of 1million records
+      size: 1024 * 1024 * 1024, // 1GB Maximum size
       autoIndexId: true,
     },
-    collection: 'user-data',
+    collection: 'user-info',
     timestamps: true,
     versionKey: false,
   }

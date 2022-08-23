@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const { passwordHash, passwordCompare } = require('../helper/hashing');
 const cloudinary = require('../utils/cloudinary');
 const bcrypt = require('bcrypt');
+
 const User = require('../models');
+
 const {
   signUp,
   findAll,
@@ -36,6 +38,7 @@ exports.signUp = async (req, res, next) => {
     }
 
     const hashedPassword = await passwordHash(password);
+  
     const data = {
       name,
       email,
@@ -133,6 +136,7 @@ exports.updateUser = async (req, res, next) => {
     const updatedUser = await updateAUser({ _id: req.params.id }, data, {
       upsert: true,
       runValidators: true,
+      isNew: true, // immutable checker
     });
     return res.status(200).json(updatedUser);
   } catch (error) {
