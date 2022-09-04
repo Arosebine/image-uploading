@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const upload = require('../utils/multer');
+const { isAuth, validateAdmin } = require('../middleware/isAuth');
+
+
 
 const {
   signUp,
@@ -10,7 +13,11 @@ const {
   updateUser,
   getAllUsers,
 } = require('../controllers/user__controller');
-const { isAuth, validateAdmin } = require('../middleware/isAuth');
+
+
+
+
+
 
 router.post('/signup', upload.single('photo'), signUp);
 

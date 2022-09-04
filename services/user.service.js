@@ -1,5 +1,8 @@
 const User = require('../models/user.model');
 
+
+
+
 exports.signUp = async (data) => {
   try {
     const user = new User(data);

@@ -3,7 +3,7 @@ const { passwordHash, passwordCompare } = require('../helper/hashing');
 const cloudinary = require('../utils/cloudinary');
 const bcrypt = require('bcrypt');
 
-const User = require('../models');
+const User = require('../models/user.model');
 
 const {
   signUp,
@@ -13,10 +13,16 @@ const {
   findUserByEmail,
   findUsersById,
 } = require('../services/user.service');
+
+
+
 const {
   registerValidation,
   loginValidation,
 } = require('../validation/validation');
+
+
+
 const { deleteOne } = require('../models/user.model');
 const { jwtSign } = require('../helper/jwt');
 
